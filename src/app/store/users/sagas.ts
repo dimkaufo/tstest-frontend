@@ -76,7 +76,7 @@ export function* watchRegisterUser() {
 function* changeUserSettings({payload}: ChangeSettingsRequestedAction) {
     yield put({type: CHANGE_SETTINGS_LOADING});
     try {
-        const {settings} = yield call<ApiCallType<UserSettings>>(Users.changeSettings, {body: payload});
+        const settings = yield call<ApiCallType<UserSettings>>(Users.changeSettings, {body: payload});
         yield put({type: CHANGE_SETTINGS_SUCCEEDED, payload: {settings}});
     } catch (error) {
         yield put({type: CHANGE_SETTINGS_FAILED, payload: {error}});

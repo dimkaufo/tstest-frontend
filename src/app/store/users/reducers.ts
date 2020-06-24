@@ -134,10 +134,10 @@ export function usersReducer(
                 },
                 currentUser: {
                     ...state.currentUser,
-                    // result: {
-                    //     ...(state.currentUser || {}),
-                    //     settings: action.payload.settings,
-                    // },
+                    result: state.currentUser.result ? {
+                        ...state.currentUser.result,
+                        settings: action.payload.settings,
+                    }: null,
                 },
             }
         case CHANGE_SETTINGS_FAILED:
