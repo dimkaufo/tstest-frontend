@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "diagnostics": false,
+    "jsx": "react",
+    "lib": [
+      "DOM",
+      "ESNext",
+      "Scripthost",
+      "ES2015.Iterable",
+      "ES2018.Promise"
+    ],
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./build/",
+    "removeComments": true,
+    "strict": true,
+    "sourceMap": true,
+    "target": "ES5",
+    "baseUrl": "./src/app",
+    "typeRoots": ["node_modules/@types"],
+    "paths": {
+      "app-assets/*": [
+        "../assets"
+      ],
+      "app-types/*": [
+        "../types"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*.ts", "./src/**/*.tsx"
+  ],
+  "exclude": [
+    "./node_modules/**/*"
+  ]
+}
+
