@@ -27,7 +27,7 @@ import {
     CHANGE_SETTINGS_SUCCEEDED,
     LoginRequestedAction,
     RegisterRequestedAction,
-    ChangeSettingsRequestedAction,
+    ChangeSettingsRequestedAction, LoginPayload, RegisterPayload, ChangeSettingsPayload,
 } from "store/users/types";
 
 function* fetchCurrentUser() {
@@ -47,7 +47,7 @@ export function* watchFetchUser() {
 function* loginUser({payload}: LoginRequestedAction) {
     yield put({type: LOGIN_LOADING});
     try {
-        const {accessToken} = yield call<ApiCallType<TokenContainer>>(Users.login, {body: payload});
+        const {accessToken} = yield call<ApiCallType<TokenContainer, LoginPayload>>(Users.login, {body: payload});
         localStorage.setItem("access_token", accessToken);
         yield put({type: LOGIN_SUCCEEDED, payload: {accessToken}});
     } catch (error) {
@@ -62,7 +62,7 @@ export function* watchLoginUser() {
 function* registerUser({payload}: RegisterRequestedAction) {
     yield put({type: REGISTER_LOADING});
     try {
-        const result = yield call<ApiCallType<boolean>>(Users.register, {body: payload});
+        const result = yield call<ApiCallType<boolean, RegisterPayload>>(Users.register, {body: payload});
         yield put({type: REGISTER_SUCCEEDED, payload: {result}});
     } catch (error) {
         yield put({type: REGISTER_FAILED, payload: {error}});
@@ -76,7 +76,7 @@ export function* watchRegisterUser() {
 function* changeUserSettings({payload}: ChangeSettingsRequestedAction) {
     yield put({type: CHANGE_SETTINGS_LOADING});
     try {
-        const settings = yield call<ApiCallType<UserSettings>>(Users.changeSettings, {body: payload});
+        const settings = yield call<ApiCallType<UserSettings, ChangeSettingsPayload>>(Users.changeSettings, {body: payload});
         yield put({type: CHANGE_SETTINGS_SUCCEEDED, payload: {settings}});
     } catch (error) {
         yield put({type: CHANGE_SETTINGS_FAILED, payload: {error}});

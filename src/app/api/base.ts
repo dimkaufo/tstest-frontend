@@ -6,10 +6,10 @@ type ToApiProps = {
     path: string
 };
 
-export type ApiCallProps = {
-    queryParams?: any,
-    pathParams?: any,
-    body?: any
+export type ApiCallProps<B> = {
+    queryParams?: {[key: string]: string},
+    pathParams?: {[key: string]: string},
+    body?: B
 };
 
 export type ApiResponse<T> = {
@@ -17,12 +17,12 @@ export type ApiResponse<T> = {
     data: T
 }
 
-export type ApiCallType<T> = (props?: ApiCallProps) => Promise<T | undefined>;
+export type ApiCallType<T, B = undefined> = (props?: ApiCallProps<B>) => Promise<T | undefined>;
 
 const baseUrl = "http://localhost:8081/api";
 
-export function toApi<T>(props: ToApiProps): ApiCallType<T> {
-    return (callProps?: ApiCallProps): Promise<T | undefined> => {
+export function toApi<R, B = undefined>(props: ToApiProps): ApiCallType<R, B> {
+    return async (callProps?: ApiCallProps<B>): Promise<R | undefined> => {
         const {
             method,
             path
@@ -37,7 +37,7 @@ export function toApi<T>(props: ToApiProps): ApiCallType<T> {
         const pathResult: string = pathParams ? format(path, pathParams) : path;
         const queryString: string = queryParams ? qs.stringify(queryParams) : "";
 
-        return fetch(new Request(
+        const response: Response = await fetch(new Request(
             `${baseUrl}/${pathResult}${queryString ? `?${queryString}` : ""}`,
             {
                 method,
@@ -47,21 +47,17 @@ export function toApi<T>(props: ToApiProps): ApiCallType<T> {
                     "Content-Type": "application/json",
                 }),
             }
-        )).then((response: Response): Promise<ApiResponse<T>> | undefined => {
-            if (response.status === 204) {
-                return;
-            }
-            return response.json();
-        }).then((data: ApiResponse<T> | undefined): T | undefined => {
-            if (data === undefined) {
-                return;
-            }
+        ));
 
-            if (data.error) {
-                throw data.error;
-            }
+        const data: ApiResponse<R> | undefined = await response.json();
+        if (data === undefined) {
+            return;
+        }
 
-            return data.data;
-        });
+        if (data.error) {
+            throw data.error;
+        }
+
+        return data.data;
     }
 }

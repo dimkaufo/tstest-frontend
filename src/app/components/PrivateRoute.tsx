@@ -15,7 +15,7 @@ import {ApplicationState, AtomState} from "store/types";
 import {User} from "store/users/types";
 
 interface Props extends RouteProps {
-    component: React.ComponentType<RouteComponentProps<any>>,
+    component: React.ComponentType<RouteComponentProps>,
 }
 
 const PrivateRoute: React.FC<Props> = (props: Props): JSX.Element => {

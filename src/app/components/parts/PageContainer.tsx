@@ -54,7 +54,7 @@ const PageContent = styled.div`
 type Props = Readonly<{
     className?: string
     currentUser: User | null,
-    children?: any
+    children?: JSX.Element | JSX.Element[] | string,
     title: string
 }>
 

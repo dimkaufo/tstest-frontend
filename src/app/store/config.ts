@@ -2,7 +2,7 @@ import {compose, createStore, applyMiddleware, Middleware} from "redux";
 import * as H from "history";
 
 // middleware
-import createSagaMiddleware from "redux-saga";
+import createSagaMiddleware, {SagaMiddleware} from "redux-saga";
 import {createLogger} from "redux-logger";
 import {routerMiddleware} from "connected-react-router";
 
@@ -19,7 +19,7 @@ import {rootSaga} from "store/sagas";
  * @param sagaMiddleware
  * @returns {Middleware[]} array of created middleware
  */
-const getMiddleware = (history: H.History, sagaMiddleware: any): Middleware[] => [
+const getMiddleware = (history: H.History, sagaMiddleware: SagaMiddleware): Middleware[] => [
     sagaMiddleware,
     routerMiddleware(history),
     createLogger({
@@ -34,7 +34,7 @@ const getMiddleware = (history: H.History, sagaMiddleware: any): Middleware[] =>
  * @param sagaMiddleware
  * @returns enhancer with created middleware
  */
-const getEnhancer = (history: H.History, sagaMiddleware: any) =>
+const getEnhancer = (history: H.History, sagaMiddleware: SagaMiddleware) =>
     compose(applyMiddleware(...getMiddleware(history, sagaMiddleware)));
 
 /**
