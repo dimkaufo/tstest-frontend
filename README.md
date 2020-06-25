@@ -1,7 +1,7 @@
 # tstest-frontend
 Test Task Frontend 
 
-# Steps:
+# HowTo
 To run webpack server just do:
 
 ```
